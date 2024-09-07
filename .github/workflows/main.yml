@@ -3,27 +3,31 @@ name: Deploy to GCP Cloud Storage
 on:
   push:
     branches:
-      - main
+      - main  # This triggers the workflow on pushes to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+    # Step 1: Checkout your code
     - name: Checkout the code
       uses: actions/checkout@v2
 
+    # Step 2: Authenticate with Google Cloud
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    # Step 3: Set up the Google Cloud SDK
     - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v2
+      uses: google-github-actions/setup-gcloud@v1
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
-        version: 'latest'  # or specify a version like '419.0.0'
+        install_components: gsutil
 
-    - name: Authenticate with service account
-      run: |
-        echo "${{ secrets.GCP_SA_KEY }}" > gcloud-key.json
-        gcloud auth activate-service-account --key-file=gcloud-key.json
-
+    # Step 4: Deploy to Cloud Storage Bucket
     - name: Deploy to Cloud Storage Bucket
       run: |
         gsutil -m rsync -r ./ gs://geriprifti.com
