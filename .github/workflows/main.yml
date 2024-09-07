@@ -21,5 +21,4 @@ jobs:
     
     - name: Deploy to Cloud Storage Bucket
       run: |
-        gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
         gsutil -m rsync -r ./ gs://geriprifti.com
