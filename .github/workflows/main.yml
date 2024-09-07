@@ -21,4 +21,4 @@ jobs:
 
     - name: Deploy to Cloud Storage Bucket
       run: |
-        gsutil -m rsync -r ./ gs://your-bucket-name
+        gsutil -m rsync -r ./ gs://geriprifti.com
