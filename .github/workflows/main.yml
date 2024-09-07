@@ -18,14 +18,7 @@ jobs:
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
-        
-    - name: Authenticate and verify
-      run: |
-         echo "${{ secrets.GCP_SA_KEY }}" | gcloud auth activate-service-account --key-file=-
-         gcloud auth list
-         gsutil ls
-
-
+    
     - name: Deploy to Cloud Storage Bucket
       run: |
         gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
